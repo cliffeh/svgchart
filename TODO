@@ -1,0 +1,5 @@
+* time series support
+  * timestamp recognition
+* CSS support
+  * default color scheme
+* implement chart types other than histogram

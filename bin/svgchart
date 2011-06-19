@@ -1,0 +1,10 @@
+#!/bin/bash
+
+e=`readlink -f ${0}`
+basedir=`dirname ${e}`/..
+libdir=${basedir}/lib
+
+CLASSPATH=build:`find ${libdir}/ -name '*.jar' | xargs | tr ' ' ':'`
+MAIN=net.cliftonsnyder.svgchart.Main
+
+java -cp "${CLASSPATH}" "${MAIN}" "${@}"
