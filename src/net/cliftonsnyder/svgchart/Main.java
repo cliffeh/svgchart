@@ -46,6 +46,8 @@ public class Main {
 
 	public static void main(String[] args) {
 		Options options = new Options();
+		options.addOption("c", "stylesheet", true, "CSS stylesheet (default: "
+				+ SVGChart.DEFAULT_STYLESHEET + ")");
 		options.addOption("h", "height", true, "chart height");
 		options.addOption("i", "input-file", true,
 				"input file [default: stdin]");
@@ -151,6 +153,9 @@ public class Main {
 			}
 		}
 
+		tmp = line.getOptionValue("stylesheet", SVGChart.DEFAULT_STYLESHEET);
+		chart.setStyleSheet(tmp);
+
 		try {
 			chart.parseInput(in);
 		} catch (IOException e) {
@@ -169,5 +174,4 @@ public class Main {
 			System.exit(1);
 		}
 	}
-
 }

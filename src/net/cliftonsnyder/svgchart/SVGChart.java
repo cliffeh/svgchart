@@ -38,16 +38,21 @@ import net.cliftonsnyder.svgchart.parse.ParseException;
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentType;
 import org.w3c.dom.Element;
-
-import com.sun.org.apache.xml.internal.serialize.OutputFormat;
-import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
+import org.w3c.dom.ProcessingInstruction;
+import org.w3c.dom.bootstrap.DOMImplementationRegistry;
+import org.w3c.dom.ls.DOMImplementationLS;
+import org.w3c.dom.ls.LSOutput;
+import org.w3c.dom.ls.LSSerializer;
 
 public abstract class SVGChart {
 
 	public static final double DEFAULT_HEIGHT = 800.0;
 	public static final double DEFAULT_WIDTH = 600.0;
+	public static final String DEFAULT_STYLESHEET = "svgchart-style.css";
+
 	public static final String[] TYPES = { "(l)ine", "((h)ist)ogram", "(p)ie",
 			"(b)ar" };
+
 	public static final Pattern[] TYPE_PATTERNS = {
 			Pattern.compile("(l(ine)?)"),
 			Pattern.compile("(h((ist(ogram)?)?))"),
@@ -55,10 +60,12 @@ public abstract class SVGChart {
 
 	protected Document xmldoc;
 	private Element svg;
-	protected double width, height, topMargin, bottomMargin, rightMargin,
-			leftMargin;
+	protected double width = DEFAULT_WIDTH, height = DEFAULT_HEIGHT, topMargin,
+			bottomMargin, rightMargin, leftMargin;
+	protected String styleSheet = DEFAULT_STYLESHEET;
 
 	protected Collection<DataSet> yData;
+
 	protected List<double[]> xData;
 
 	public SVGChart() {
@@ -74,18 +81,33 @@ public abstract class SVGChart {
 		yData = new ArrayList<DataSet>();
 
 		try {
-			DocumentBuilder builder = DocumentBuilderFactory.newInstance()
-					.newDocumentBuilder();
+
+			DocumentBuilderFactory factory = DocumentBuilderFactory
+					.newInstance();
+			factory.setNamespaceAware(true);
+
+			DocumentBuilder builder = factory.newDocumentBuilder();
+			xmldoc = builder.newDocument();
+
+			ProcessingInstruction pi = (ProcessingInstruction) xmldoc
+					.createProcessingInstruction("xml-stylesheet",
+							"type=\"text/css\" href=\"" + styleSheet + "\"");
+			xmldoc.appendChild(pi);
+
+			System.err.println("*** " + xmldoc.getDocumentElement());
+
 			DocumentType docType = builder.getDOMImplementation()
 					.createDocumentType("svg", "-//W3C//DTD SVG 1.1//EN",
 							"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd");
-			xmldoc = builder.getDOMImplementation().createDocument(
-					"http://www.w3.org/2000/svg", "svg", docType);
-			svg = (Element) xmldoc.getLastChild();
+			xmldoc.appendChild(docType);
+
+			svg = xmldoc.createElement("svg");
 
 			svg.setAttribute("xmlns", "http://www.w3.org/2000/svg");
 			svg.setAttribute("width", "" + width);
 			svg.setAttribute("height", "" + height);
+
+			xmldoc.appendChild(svg);
 		} catch (ParserConfigurationException e) {
 			// this shouldn't happen...right?
 			System.err.println("error generating a new XML document");
@@ -135,6 +157,10 @@ public abstract class SVGChart {
 		return rightMargin;
 	}
 
+	public String getStyleSheet() {
+		return styleSheet;
+	}
+
 	public double getTopMargin() {
 		return topMargin;
 	}
@@ -147,10 +173,32 @@ public abstract class SVGChart {
 			ParseException;
 
 	public void printChart(PrintStream out, boolean indent) throws IOException {
-		OutputFormat format = new OutputFormat(xmldoc);
-		format.setIndenting(indent);
-		XMLSerializer serializer = new XMLSerializer(out, format);
-		serializer.serialize(xmldoc);
+		DOMImplementationRegistry registry = null;
+		try {
+			registry = DOMImplementationRegistry.newInstance();
+		} catch (ClassCastException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		DOMImplementationLS impl = (DOMImplementationLS) registry
+				.getDOMImplementation("LS");
+
+		LSSerializer writer = impl.createLSSerializer();
+		writer.getDomConfig().setParameter("format-pretty-print", true);
+		LSOutput output = impl.createLSOutput();
+		output.setByteStream(out);
+		writer.write(xmldoc, output);
+
 	}
 
 	public void setBottomMargin(double bottomMargin) {
@@ -169,6 +217,10 @@ public abstract class SVGChart {
 
 	public void setRightMargin(double rightMargin) {
 		this.rightMargin = rightMargin;
+	}
+
+	public void setStyleSheet(String styleSheet) {
+		this.styleSheet = styleSheet;
 	}
 
 	public void setTopMargin(double topMargin) {
