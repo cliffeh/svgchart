@@ -46,8 +46,11 @@ import org.w3c.dom.ls.LSSerializer;
 
 public abstract class SVGChart {
 
-	public static final double DEFAULT_HEIGHT = 800.0;
-	public static final double DEFAULT_WIDTH = 600.0;
+	public static final double DEFAULT_WIDTH = 800.0;
+	public static final double DEFAULT_HEIGHT = 600.0;
+	public static final double DEFAULT_BOTTOM_MARGIN = 20.0;
+	public static final double DEFAULT_LEFT_MARGIN = 20.0;
+
 	public static final String DEFAULT_STYLESHEET = "svgchart-style.css";
 
 	public static final String[] TYPES = { "(l)ine", "((h)ist)ogram", "(p)ie",
@@ -61,7 +64,8 @@ public abstract class SVGChart {
 	protected Document xmldoc;
 	private Element svg;
 	protected double width = DEFAULT_WIDTH, height = DEFAULT_HEIGHT, topMargin,
-			bottomMargin, rightMargin, leftMargin;
+			bottomMargin = DEFAULT_BOTTOM_MARGIN, rightMargin,
+			leftMargin = DEFAULT_LEFT_MARGIN;
 	protected String styleSheet = DEFAULT_STYLESHEET;
 
 	protected Collection<DataSet> yData;

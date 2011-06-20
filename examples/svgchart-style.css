@@ -1,4 +1,19 @@
-._a { fill: red; }
-._b { fill: blue; }
-._c { fill: cyan; }
-._d { fill: gray; }
+text{
+    font-family: verdana;
+    font-size: 11px;
+}
+
+.xlabel{
+    /* anchor our text in the middle */
+    text-anchor: middle;
+
+    /* align the text with the center of the top margin */
+    dominant-baseline: central;
+}
+
+rect{
+  fill: lightgray;
+  stroke: black;
+  stroke-width: 0.1px;
+}
+

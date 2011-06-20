@@ -64,11 +64,20 @@ public class Histogram extends SVGChart {
 
 			Element rect = xmldoc.createElement("rect");
 			rect.setAttribute("x", "" + x);
-			rect.setAttribute("y", "" + ((chartHeight - chartY)-y));
+			rect.setAttribute("y", "" + ((chartHeight - chartY) - y));
 			rect.setAttribute("width", "" + plotWidth);
 			rect.setAttribute("height", "" + y);
 			rect.setAttribute("class", "_" + data.getName());
 			canvas.appendChild(rect);
+
+			if (bottomMargin > 0) { // we have some room to put labels
+				Element text = xmldoc.createElement("text");
+				text.setAttribute("class", "xlabel");
+				text.setAttribute("x", "" + (x + plotWidth / 2));
+				text.setAttribute("y", "" + (chartHeight + bottomMargin / 2));
+				text.appendChild(xmldoc.createTextNode(data.getName()));
+				canvas.appendChild(text);
+			}
 		}
 	}
 
