@@ -49,6 +49,8 @@ public abstract class SVGChart {
 	public static final double DEFAULT_WIDTH = 800.0;
 	public static final double DEFAULT_HEIGHT = 600.0;
 	public static final double DEFAULT_BOTTOM_MARGIN = 20.0;
+	public static final double DEFAULT_TOP_MARGIN = 20.0;
+	public static final double DEFAULT_RIGHT_MARGIN = 20.0;
 	public static final double DEFAULT_LEFT_MARGIN = 20.0;
 
 	public static final String DEFAULT_STYLESHEET = "svgchart-style.css";
@@ -63,8 +65,10 @@ public abstract class SVGChart {
 
 	protected Document xmldoc;
 	private Element svg;
-	protected double width = DEFAULT_WIDTH, height = DEFAULT_HEIGHT, topMargin,
-			bottomMargin = DEFAULT_BOTTOM_MARGIN, rightMargin,
+	protected double width = DEFAULT_WIDTH, height = DEFAULT_HEIGHT,
+			topMargin = DEFAULT_TOP_MARGIN,
+			bottomMargin = DEFAULT_BOTTOM_MARGIN,
+			rightMargin = DEFAULT_RIGHT_MARGIN,
 			leftMargin = DEFAULT_LEFT_MARGIN;
 	protected String styleSheet = DEFAULT_STYLESHEET;
 

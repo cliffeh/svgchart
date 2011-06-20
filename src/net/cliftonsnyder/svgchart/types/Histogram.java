@@ -41,6 +41,7 @@ public class Histogram extends SVGChart {
 		double chartX = calculateChartX();
 		double chartY = calculateChartY();
 		double chartHeight = calculateChartHeight();
+		System.err.println("ch: " + chartHeight);
 		double chartWidth = calculateChartWidth();
 
 		double globalMinimum = Double.MAX_VALUE;
@@ -60,13 +61,13 @@ public class Histogram extends SVGChart {
 		int i = 0;
 		for (DataSet data : yData) {
 			double x = chartX + plotWidth * i++;
-			double y = data.getPoints().get(0)[0] * scale;
+			double rectHeight = data.getPoints().get(0)[0] * scale;
 
 			Element rect = xmldoc.createElement("rect");
 			rect.setAttribute("x", "" + x);
-			rect.setAttribute("y", "" + ((chartHeight - chartY) - y));
+			rect.setAttribute("y", "" + (chartHeight + chartY - rectHeight));
 			rect.setAttribute("width", "" + plotWidth);
-			rect.setAttribute("height", "" + y);
+			rect.setAttribute("height", "" + rectHeight);
 			rect.setAttribute("class", "_" + data.getName());
 			canvas.appendChild(rect);
 
@@ -74,7 +75,7 @@ public class Histogram extends SVGChart {
 				Element text = xmldoc.createElement("text");
 				text.setAttribute("class", "xlabel");
 				text.setAttribute("x", "" + (x + plotWidth / 2));
-				text.setAttribute("y", "" + (chartHeight + bottomMargin / 2));
+				text.setAttribute("y", "" + (height - bottomMargin / 2));
 				text.appendChild(xmldoc.createTextNode(data.getName()));
 				canvas.appendChild(text);
 			}
