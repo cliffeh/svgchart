@@ -31,12 +31,12 @@ import java.util.List;
 
 import net.cliftonsnyder.svgchart.data.DataSet;
 
-public class HistogramDataParser {
+public class BarChartDataParser {
 
 	private List<double[]> xData;
 	private Collection<DataSet> yData;
 
-	public HistogramDataParser() {
+	public BarChartDataParser() {
 		// xData = new ArrayList<Point>(); // only initialize this if we need
 		// it!
 		yData = new ArrayList<DataSet>();

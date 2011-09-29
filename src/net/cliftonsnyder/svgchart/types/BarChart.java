@@ -25,12 +25,12 @@ import java.io.InputStream;
 
 import net.cliftonsnyder.svgchart.SVGChart;
 import net.cliftonsnyder.svgchart.data.DataSet;
-import net.cliftonsnyder.svgchart.parse.HistogramDataParser;
+import net.cliftonsnyder.svgchart.parse.BarChartDataParser;
 import net.cliftonsnyder.svgchart.parse.ParseException;
 
 import org.w3c.dom.Element;
 
-public class Histogram extends SVGChart {
+public class BarChart extends SVGChart {
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -90,7 +90,7 @@ public class Histogram extends SVGChart {
 	 * io.InputStream)
 	 */
 	public void parseInput(InputStream in) throws IOException, ParseException {
-		HistogramDataParser parser = new HistogramDataParser();
+		BarChartDataParser parser = new BarChartDataParser();
 		parser.parseInput(in);
 		xData = parser.getXData();
 		yData = parser.getYData();

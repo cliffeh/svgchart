@@ -30,7 +30,7 @@ import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import net.cliftonsnyder.svgchart.types.Histogram;
+import net.cliftonsnyder.svgchart.types.BarChart;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -89,12 +89,9 @@ public class Main {
 					// DEBUG
 					System.err.println("line");
 					break;
-				case 'h':
-					System.err.println("histogram");
-					chart = new Histogram();
-					break;
 				case 'b':
 					System.err.println("bar");
+					chart = new BarChart();
 					break;
 				case 'p':
 					System.err.println("pie");
